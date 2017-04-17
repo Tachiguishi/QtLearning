@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QTextEdit>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->mainToolBar->addAction(m_openAction);
     ui->mainToolBar->addAction(m_saveAction);
+
+    m_textEdit = new QTextEdit();
+    setCentralWidget(m_textEdit);
 }
 
 MainWindow::~MainWindow()

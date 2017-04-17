@@ -7,6 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class QTextEdit;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,6 +22,8 @@ private:
 
     QAction *m_openAction;
     QAction *m_saveAction;
+
+    QTextEdit *m_textEdit;
 };
 
 #endif // MAINWINDOW_H
