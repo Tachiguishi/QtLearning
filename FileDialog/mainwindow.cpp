@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(m_textEdit);
 
     connect(m_openAction, &QAction::triggered, this, &MainWindow::openFile);
+    connect(m_saveAction, &QAction::triggered, this, &MainWindow::saveFile);
 }
 
 MainWindow::~MainWindow()
@@ -59,6 +60,30 @@ void MainWindow::openFile()
 
         QTextStream in(&file);
         m_textEdit->setText(in.readAll());
+        file.close();
+    }
+    else{
+        QMessageBox::warning(this, tr("Path"),
+                             tr("You did not select any file"));
+    }
+}
+
+void MainWindow::saveFile()
+{
+    QString path = QFileDialog::getSaveFileName(this,
+                                                tr("Open File"),
+                                                ".",
+                                                tr("Text Files(*.txt)"));
+    if(!path.isEmpty()){
+        QFile file(path);
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QMessageBox::warning(this, tr("Write File"),
+                                 tr("Cannot open file:\n%1").arg(path));
+            return;
+        }
+
+        QTextStream out(&file);
+        out<<m_textEdit->toPlainText();
         file.close();
     }
     else{

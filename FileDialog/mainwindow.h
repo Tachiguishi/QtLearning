@@ -19,6 +19,7 @@ public:
 
 private slots:
     void openFile();
+    void saveFile();
 
 private:
     Ui::MainWindow *ui;
