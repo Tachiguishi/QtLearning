@@ -1,6 +1,7 @@
+#include <QtGui>
+#include <QtWidgets>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QTextEdit>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_textEdit = new QTextEdit();
     setCentralWidget(m_textEdit);
+
+    connect(m_openAction, &QAction::triggered, this, &MainWindow::openFile);
 }
 
 MainWindow::~MainWindow()
@@ -37,5 +40,29 @@ MainWindow::~MainWindow()
 
     if(m_saveAction){
         delete m_saveAction;
+    }
+}
+
+void MainWindow::openFile()
+{
+    QString path = QFileDialog::getOpenFileName(this,
+                                                tr("Open File"),
+                                                ".",
+                                                tr("Text Files(*.txt)"));
+    if(!path.isEmpty()){
+        QFile file(path);
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+            QMessageBox::warning(this, tr("Read File"),
+                                 tr("Cannot open file:\n%1").arg(path));
+            return;
+        }
+
+        QTextStream in(&file);
+        m_textEdit->setText(in.readAll());
+        file.close();
+    }
+    else{
+        QMessageBox::warning(this, tr("Path"),
+                             tr("You did not select any file"));
     }
 }
