@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    QAction *m_openAction;
+    QAction *m_saveAction;
 };
 
 #endif // MAINWINDOW_H
